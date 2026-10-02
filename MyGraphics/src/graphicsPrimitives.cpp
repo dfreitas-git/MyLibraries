@@ -20,7 +20,7 @@ void GraphicsPrimitives::writePixel(FrameBuffer bbuf, int col, int row, const st
       bbuf[idx] = color;
   } else {
       outOfBoundsPixelCount++;
-      Serial.printf("writePixel bounds errors: %d\n",outOfBoundsPixelCount);
+     // Serial.printf("writePixel bounds errors: %d\n",outOfBoundsPixelCount);
   }
 }
 
