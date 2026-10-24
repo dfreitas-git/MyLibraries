@@ -4,7 +4,9 @@
 #include <stdint.h>
 
 constexpr uint32_t WAND_PROTOCOL_MAGIC   = 0x57414E44;  // "WAND"
-constexpr uint16_t WAND_PROTOCOL_VERSION = 1;
+constexpr uint16_t WAND_PROTOCOL_VERSION = 2;  // 2 adds a sessionID number
+constexpr uint8_t PANEL_MAC[6] = { 0x2C, 0xBC, 0xBB, 0x4B, 0x7C, 0x60 };
+constexpr uint8_t WAND_MAC[6] = { 0x30, 0x30, 0xF9, 0x33, 0xE1, 0x7C };
 
 enum class WandMode : uint8_t {
     Panel = 0,
@@ -34,9 +36,11 @@ enum class WandGesture : uint8_t {
 struct WandPacket {
     uint32_t magic;
     uint16_t version;
-
-    uint32_t sequence;
-    uint32_t timestampMs;
+    uint32_t sessionId;
+    uint32_t packetSequence;
+    uint32_t packetTimestampMs;
+    uint32_t eventSequence;
+    uint32_t eventTimestampMs;
 
     WandMode mode;
     WandGesture gesture;
@@ -56,3 +60,11 @@ struct WandPacket {
     float vy;
     float vz;
 };
+
+
+struct GestureEvent {
+    WandGesture gesture = WandGesture::None;
+    uint32_t eventSequence = 0;
+    uint32_t eventTimestampMs = 0;
+};
+

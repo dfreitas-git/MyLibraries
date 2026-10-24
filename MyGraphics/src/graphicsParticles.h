@@ -24,11 +24,13 @@ class GraphicsParticles {
 
 public:
   Star& getStar(int i);
+  Star& getSuperStar();
   Star& getSpokes(int i);
 
 private:
   // This is used in the star animation.  Its the number of stars shooting at any given time
   Star stars[NUM_STARS];
+  Star superStar;
 
   // This is used in the fireworks animation.  Its the number of exploding spokes
   Star explosionSpokes[NUM_SPOKES];

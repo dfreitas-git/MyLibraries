@@ -76,8 +76,8 @@ void GraphicsAnimations::initShootingStars() {
 
     s->x  = random(0, COLUMNS);
     s->y  = random(0, ROWS);
-    s->vx = random(-30, 30) / 100.0;   // subtle drift
-    s->vy = - (random(80, 140) / 100.0);
+    s->vx = random(-60, 60) / 100.0;   // horizontal drift
+    s->vy = - (random(80, 140) / 100.0);  // vertical speed
 
     s->r = random(0, 255);
     s->g = random(0, 255);
@@ -85,19 +85,36 @@ void GraphicsAnimations::initShootingStars() {
   }
 }
 
+// Set up parameters for the shooting star superStar
+void GraphicsAnimations::initSuperStar() {
+    Star *superS = &gPart.getSuperStar();
+
+    superS->x  = random(0, COLUMNS);
+    superS->y  = ROWS;
+    superS->vx = random(-30, 30) / 100.0;   // horizontal drift
+    superS->vy = - (random(50, 100) / 100.0);  // vertical speed
+    superS->r =  255;
+    superS->g =  255;
+    superS->b =  255;
+    superStarActive = true;
+
+}
+
+
 // Main rendering function
-void GraphicsAnimations::shootingStar(FrameBuffer bbuf) {
+void GraphicsAnimations::shootingStar(FrameBuffer bbuf, const ShootingStarSettings& settings) {
 
   // Iterate over the entire framebuffer subtracting brightness from each
   // pixel until we fade to black
   fadeFramebuffer(bbuf, 10);   // larger number fades quicker
 
-  for (int i = 0; i < NUM_STARS; i++) {
+
+  for (int i = 0; i < settings.starCount; i++) {
 
     Star *s = &gPart.getStar(i);
 
-    s->x += s->vx;
-    s->y += s->vy;
+    s->x += s->vx * settings.speedMultiplier;
+    s->y += s->vy * settings.speedMultiplier;
 
     // wrap columns
     if (s->x < 0)        s->x += COLUMNS;
@@ -109,7 +126,7 @@ void GraphicsAnimations::shootingStar(FrameBuffer bbuf) {
       s->y = ROWS - 1;
 
       // Alter these to change the glide slope
-      s->vx = random(-60, 60) / 100.0;     // horizontal motion
+      s->vx = (random(-60, 60) / 100.0);     // horizontal motion
       s->vy = - (random(16, 28) / 100.0);  // vertical motion
 
       // Every now and then throw in a "flare"
@@ -128,6 +145,34 @@ void GraphicsAnimations::shootingStar(FrameBuffer bbuf) {
     if (col >= 0 && col < COLUMNS && row >= 0 && row < ROWS) {
         int idx = (row * COLUMNS + col);
         bbuf[idx] = {s->r, s->g, s->b};
+    }
+  }
+
+  // Now fill in the superStar if it has been init'ed
+  if (superStarActive) {
+  Star *superS = &gPart.getSuperStar();
+
+  superS->x += superS->vx * settings.speedMultiplier;
+  superS->y += superS->vy * settings.speedMultiplier;
+
+  if (superS->y < 0 ||
+      superS->x < 0 ||
+      superS->x >= COLUMNS) {
+      superStarActive = false;
+  } else {
+      int col;
+      int row;
+ 
+      // Make it triple wide
+      for(int i=-1; i<2; i++) {
+          col = (int)superS->x+i;
+          row = (int)superS->y;
+    
+          if (col >= 0 && col < COLUMNS && row >= 0 && row < ROWS) {
+              int idx = (row * COLUMNS + col);
+              bbuf[idx] = {superS->r, superS->g, superS->b};
+          }
+      }
     }
   }
 }

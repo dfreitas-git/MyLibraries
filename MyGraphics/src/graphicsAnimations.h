@@ -11,12 +11,18 @@ typedef enum {
   FIREWORK_EXPLOSION
 } FireworkState;
 
+struct ShootingStarSettings {
+    uint8_t starCount = 5;
+    float speedMultiplier = 1.0f;
+};
+
 class GraphicsAnimations {
 
   public:
     void clearBackground(FrameBuffer bbuf);
     void initShootingStars();
-    void shootingStar(FrameBuffer bbuf);
+    void initSuperStar();
+    void shootingStar(FrameBuffer bbuf, const ShootingStarSettings& settings);
     void fadeFramebuffer(FrameBuffer bbuf, uint8_t decay);
     void fireworks(FrameBuffer bbuf);
     void initRocket();
@@ -27,6 +33,12 @@ class GraphicsAnimations {
     void eyeball(FrameBuffer bbuf);
     void pacman1(FrameBuffer bbuf);
     void flames(FrameBuffer bbuf);
+    //const bool& getSuperStarLaunchPending() const {
+    //    return superStarLaunchPending;
+   // }
+   // void setSuperStarLaunchPending(bool status) {
+   //    superStarLaunchPending  = status;
+   // }
      
 
   private:
@@ -34,6 +46,7 @@ class GraphicsAnimations {
     // State var for the fireworks animation
     FireworkState fwState = FIREWORK_ROCKET;
     uint32_t stateStartTime = 0;
+    bool superStarActive = false;
 
     float lerp(float a, float b, float f);
     void  lerpColor(RGB& out, RGB& a, RGB& b, float f);
