@@ -20,6 +20,7 @@ enum class WandGesture : uint8_t {
     ThrustIn,
     ThrustOut,
 
+    // Not implemented yet
     CircleCW,
     CircleCCW
 };
