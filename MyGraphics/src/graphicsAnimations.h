@@ -21,7 +21,7 @@ class GraphicsAnimations {
   public:
     void clearBackground(FrameBuffer bbuf);
     void initShootingStars();
-    void initSuperStar();
+    void initSuperStar(float& direction);
     void shootingStar(FrameBuffer bbuf, const ShootingStarSettings& settings);
     void fadeFramebuffer(FrameBuffer bbuf, uint8_t decay);
     void fireworks(FrameBuffer bbuf);

@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 constexpr uint32_t WAND_PROTOCOL_MAGIC   = 0x57414E44;  // "WAND"
-constexpr uint16_t WAND_PROTOCOL_VERSION = 2;  // 2 adds a sessionID number
+constexpr uint16_t WAND_PROTOCOL_VERSION = 3;  // 3 adds swipeDirection
 constexpr uint8_t PANEL_MAC[6] = { 0x2C, 0xBC, 0xBB, 0x4B, 0x7C, 0x60 };
 constexpr uint8_t WAND_MAC[6] = { 0x30, 0x30, 0xF9, 0x33, 0xE1, 0x7C };
 
@@ -16,16 +16,7 @@ enum class WandMode : uint8_t {
 enum class WandGesture : uint8_t {
     None = 0,
 
-    SwipeLeft,
-    SwipeRight,
-    SwipeUp,
-    SwipeDown,
-
-    SwipeUpLeft,
-    SwipeUpRight,
-    SwipeDownLeft,
-    SwipeDownRight,
-
+    Swipe,
     ThrustIn,
     ThrustOut,
 
@@ -44,6 +35,9 @@ struct WandPacket {
 
     WandMode mode;
     WandGesture gesture;
+
+    // Swipe direction (in radians)
+    float swipeDirection;
 
     // Wand orientation, radians
     float roll;
@@ -66,5 +60,6 @@ struct GestureEvent {
     WandGesture gesture = WandGesture::None;
     uint32_t eventSequence = 0;
     uint32_t eventTimestampMs = 0;
+    float swipeDirection = 0.0f;  // Radians
 };
 

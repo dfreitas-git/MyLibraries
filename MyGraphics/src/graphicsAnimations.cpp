@@ -86,19 +86,39 @@ void GraphicsAnimations::initShootingStars() {
 }
 
 // Set up parameters for the shooting star superStar
-void GraphicsAnimations::initSuperStar() {
+void GraphicsAnimations::initSuperStar(float& direction) {
     Star *superS = &gPart.getSuperStar();
 
-    superS->x  = random(0, COLUMNS);
-    superS->y  = ROWS;
-    superS->vx = random(-30, 30) / 100.0;   // horizontal drift
-    superS->vy = - (random(50, 100) / 100.0);  // vertical speed
+    constexpr float SUPERSTAR_SPEED = 0.5f;  // Pixels per frame (tune to look good)
+    float vx = SUPERSTAR_SPEED * cosf(direction);
+    float vy = SUPERSTAR_SPEED * sinf(direction);
+
+    float cx = (COLUMNS - 1) / 2.0f;
+    float cy = (ROWS - 1) / 2.0f;
+
+    // Distance from center to the boundary,
+    // traveling opposite the swipe direction.
+    float tx = fabsf(vx) > 0.0001f ? cx / fabsf(vx) : INFINITY;
+    float ty = fabsf(vy) > 0.0001f ? cy / fabsf(vy) : INFINITY;
+
+    float t = fminf(tx, ty);
+
+    float startX = cx - t * vx;
+    float startY = cy - t * vy;
+
+    superS->x  = startX;
+    superS->y  = startY;
+    superS->vx = vx;   // horizontal drift
+    superS->vy = vy;  // vertical speed
     superS->r =  255;
     superS->g =  255;
     superS->b =  255;
     superStarActive = true;
 
 }
+
+
+
 
 
 // Main rendering function
@@ -163,10 +183,10 @@ void GraphicsAnimations::shootingStar(FrameBuffer bbuf, const ShootingStarSettin
       int col;
       int row;
  
-      // Make it triple wide
+      // Make it triple wide/tall
       for(int i=-1; i<2; i++) {
           col = (int)superS->x+i;
-          row = (int)superS->y;
+          row = (int)superS->y+i;
     
           if (col >= 0 && col < COLUMNS && row >= 0 && row < ROWS) {
               int idx = (row * COLUMNS + col);
