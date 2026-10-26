@@ -59,6 +59,7 @@ struct WandPacket {
 
 struct GestureEvent {
     WandGesture gesture = WandGesture::None;
+    WandMode mode;
     uint32_t eventSequence = 0;
     uint32_t eventTimestampMs = 0;
     float swipeDirection = 0.0f;  // Radians
