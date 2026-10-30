@@ -17,6 +17,7 @@ struct palette {
     RGB darkgray  = {64,64,64};
     RGB darkgreen = {0,64,0};
     RGB darkred   = {64,0,0};
+    RGB darkyellow = {64,37,0};
     RGB gray  = {128,128,128};
     RGB green = {0,255,0};
     RGB lightbrown  = {255,159,127};
@@ -26,6 +27,7 @@ struct palette {
     RGB mediumgray = {96,96,96};
     RGB mediumgreen = {0,128,0};
     RGB meduimred   = {128,0,0};
+    RGB mediumyellow = {128,75,0};
     RGB olivegreen = {64,80,0};
     RGB orange = {255,159,0};
     RGB pink   = {255,192,203}; 
@@ -65,3 +67,9 @@ constexpr RGB contrastColors[] = {
                 //{0,235,235},
               };
 
+
+constexpr RGB checkerBoardColors[] = {
+                {64,0,0},
+                {0,64,0},
+                {0,0,64},
+              };

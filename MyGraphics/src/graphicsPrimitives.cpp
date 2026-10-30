@@ -412,7 +412,7 @@ void GraphicsPrimitives::drawChar(FrameBuffer bbuf, char c, int x, int y, RGB fg
 void GraphicsPrimitives::drawString(FrameBuffer bbuf, const char* s, int x, int y, RGB fg, RGB bg) {
   while(*s) {
     drawChar(bbuf, *s, x, y, fg, bg);
-    x += 7;  // 6px glyph + 1px spacing
+    x += 6;  // 6px glyph (spacing is built into character on top/right edges)
     s++;
   }
 }

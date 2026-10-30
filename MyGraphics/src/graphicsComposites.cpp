@@ -16,6 +16,10 @@ void GraphicsComposites::drawEyeball(FrameBuffer bbuf, int centerX, int centerY,
   if(move == RIGHT) {dX=3; dY = 0;}
   if(move == UP) {dX=0; dY = 3;}
   if(move == DOWN) {dX=0; dY = -3;}
+  if(move == LEFT_UP) {dX=-2; dY = 2;}
+  if(move == LEFT_DOWN) {dX=-2; dY = -2;}
+  if(move == RIGHT_UP) {dX=2; dY = 2;}
+  if(move == RIGHT_DOWN) {dX=2; dY = -2;}
 
   gPrim.drawCircle(bbuf, centerX,centerY, radius, fgColor);  // White of the eye
   gPrim.drawCircle(bbuf, centerX+dX, centerY+dY, radius/2, eyeColor);  //iris

@@ -117,17 +117,12 @@ void GraphicsAnimations::initSuperStar(float& direction) {
 
 }
 
-
-
-
-
 // Main rendering function
 void GraphicsAnimations::shootingStar(FrameBuffer bbuf, const ShootingStarSettings& settings) {
 
   // Iterate over the entire framebuffer subtracting brightness from each
   // pixel until we fade to black
   fadeFramebuffer(bbuf, 10);   // larger number fades quicker
-
 
   for (int i = 0; i < settings.starCount; i++) {
 
@@ -333,72 +328,50 @@ void GraphicsAnimations::fireworks(FrameBuffer bbuf) {
 
 
 //#############################################
-//  Checker Board with changing colors
+//  Checker Board with changing colors and size
 //#############################################
-void GraphicsAnimations::checker(FrameBuffer bbuf) {
+void GraphicsAnimations::checker(FrameBuffer bbuf, const CheckerBoardSettings& settings) {
 
-  // Keep two sets of pointers for the colors befor/after the moving column dividing line
-  static int bg0ColorIndex = 0;
-  static int fg0ColorIndex = 1;
-  static int bg1ColorIndex = 2;
-  static int fg1ColorIndex = 3;
-
-  // colors defined in graphicsFunctions.h
-  int colorArrLen = sizeof(contrastColors) / sizeof(contrastColors[0]);
+  int period = 1000;
 
   // Use time to control the frequency of color changes
-  int colorPeriod = 1000;
   uint32_t elapsed = millis();
 
-  // What cycle are we in?
-  uint32_t cycle = elapsed / colorPeriod; 
-  static uint32_t lastCycle = 0;
+  // Pick the color based on the pose parameters
+  RGB color = checkerBoardColors[settings.colorIndex];
 
-  // The advancing line where the color1 pair replaces color0 pair.  Wrap back to 0 after advancing past COLUMNS
-  int head = (elapsed * COLUMNS) / colorPeriod % COLUMNS;  
+  uint8_t bright;
 
-  // Change colors when head wraps
-  if (cycle != lastCycle) {    
-    bg0ColorIndex = bg1ColorIndex;
-    fg0ColorIndex = fg1ColorIndex;
-    bg1ColorIndex+=2;
-    fg1ColorIndex+=2;
-
-    if(fg1ColorIndex == colorArrLen + 1 ) {
-       bg1ColorIndex = 0;
-       fg1ColorIndex = 1;
-    }
-    lastCycle = cycle;
+  if(settings.colorIndex < 33) {
+      bright = map(settings.colorIndex,0,32,6,48);
+      color = {bright,0,0};
+  } else if(settings.colorIndex < 66) {
+      bright = map(settings.colorIndex,33,62,6,96);
+      color = {0,bright,0};
+  } else {
+      bright = map(settings.colorIndex,63,99,6,128);
+      color = {0,0,bright};
   }
 
   // Now map the color based on the position
   for (int col = 0; col < COLUMNS; col++) {
-    int d = (head - col + COLUMNS) % COLUMNS;   // distance behind the head this current col is
-    int fgIndex, bgIndex;
-
-    // Pick the color pair based on where we are relative to the moving head dividing line
-    if (d > 0 && d <= head) {
-      fgIndex = fg1ColorIndex;
-      bgIndex = bg1ColorIndex;
-    } else {  
-      fgIndex = fg0ColorIndex;
-      bgIndex = bg0ColorIndex;
-    }
     for (int row = 0; row < ROWS; row++) {
 
-      // shift by 2 so we "coarseify" the xor to happen across 4 row/col bands
-      bool fg = ((row >> 2) ^ (col >> 2)) & 1;
-      RGB color;
+      // shift by n (where n is 1,2,3,4) so we "coarseify" the xor to happen across multiple row/col bands
+      uint8_t coarseify = settings.squareScaler;
+      bool fg = ((row >> coarseify) ^ (col >> coarseify)) & 1;
+      RGB curColor;
       if(fg) {
-        color = contrastColors[fgIndex];
+        curColor = color;
       } else { 
-        color = contrastColors[bgIndex];
+        curColor = {0,0,0};
       }
       int idx = (row * COLUMNS + col);
-      bbuf[idx] = {color.r, color.g, color.b};
+      bbuf[idx] = {curColor.r, curColor.g, curColor.b};
     }
   }
 }
+
 
 //##################################
 //  Double Spiral around the Sphere
@@ -524,18 +497,16 @@ void GraphicsAnimations::flower(FrameBuffer bbuf) {
 }
 
 
-//#############################
+//##############################################################
 //  Animated blinking eyeballs
-//#############################
-void GraphicsAnimations::eyeball(FrameBuffer bbuf) {
+//  wand roll left/right, pitch up/down control eye position
+//  thrustIn causes a blink
+//##############################################################
+void GraphicsAnimations::eyeball(FrameBuffer bbuf, const EyeballSettings& settings, bool startBlink) {
 
   // How quickly we do framebuffer updates (in ms)
-  constexpr uint16_t animatePeriod = 1000;
   constexpr uint16_t blinkPeriod = 50;  // how fast to blink
-  constexpr int ANIMATE_CYCLES_UNTIL_TRIGGER = 5;  // how often to blink
-  static int blinkTrigger = ANIMATE_CYCLES_UNTIL_TRIGGER;  
-  static int blinkToRow = ROWS - 1;  // How far down the blink is
-  static int whichEyeToBlink = 0;
+  static uint8_t blinkRow = ROWS - 1;  // How far down the blink is
 
   // Get the colors
   static palette c;
@@ -544,9 +515,7 @@ void GraphicsAnimations::eyeball(FrameBuffer bbuf) {
   uint32_t elapsed = millis();
 
   // What cycle are we in?
-  uint32_t cycle = elapsed / animatePeriod; 
   uint32_t blinkCycle = elapsed / blinkPeriod; 
-  static uint32_t lastCycle = 0;
   static uint32_t lastBlinkCycle = 0;
 
   // Fill the black background
@@ -555,45 +524,68 @@ void GraphicsAnimations::eyeball(FrameBuffer bbuf) {
       gPrim.writePixel(bbuf,col, row, c.black);
     }
   }
-  // Animate the eyeball by offsetting the iris/pupil based on the cycle we are in
-  static EYEBALL_MOVE position[5] = {CENTER, LEFT, RIGHT, UP, DOWN};
+  // Animate the eyeball by offsetting the iris/pupil based on the wand pose
+  static EYEBALL_MOVE position[9] = {CENTER, LEFT, RIGHT, UP, DOWN, LEFT_UP, LEFT_DOWN, RIGHT_UP, RIGHT_DOWN};
   static int posIndex = 0;
-  if(cycle != lastCycle) {
-    posIndex = int(random(4));
-    lastCycle = cycle;
-    blinkTrigger--;  // count down until time to blink
-    if(blinkTrigger < 0) {
-      lastBlinkCycle = blinkCycle;
-    }
-  }
+  static bool blinkActive = false;
+  #define CLOSING  0
+  #define OPENING  1
+  static uint8_t blinkDirection = CLOSING;
 
-  // What to do when the blink trigger is active
-  if(blinkTrigger < 0) {
-    if(blinkCycle != lastBlinkCycle) {
-      lastBlinkCycle = blinkCycle;
-      blinkToRow-=4;
-      if(blinkToRow <= 4) {
-        blinkTrigger = ANIMATE_CYCLES_UNTIL_TRIGGER; 
-        blinkToRow = ROWS - 1;
+    // eyePosition 
+    posIndex = 0;
+    if(settings.eyePosition_LR == -1 && settings.eyePosition_UD == 0) 
+        posIndex = 1;
+    if(settings.eyePosition_LR == 1 && settings.eyePosition_UD == 0) 
+        posIndex = 2;
+    if(settings.eyePosition_LR == 0 && settings.eyePosition_UD == 1) 
+        posIndex = 3;
+    if(settings.eyePosition_LR == 0 && settings.eyePosition_UD == -1) 
+        posIndex = 4;
+    if(settings.eyePosition_LR == -1 && settings.eyePosition_UD == 1) 
+        posIndex = 5;
+    if(settings.eyePosition_LR == -1 && settings.eyePosition_UD == -1) 
+        posIndex = 6;
+    if(settings.eyePosition_LR == 1 && settings.eyePosition_UD == 1) 
+        posIndex = 7;
+    if(settings.eyePosition_LR == 1 && settings.eyePosition_UD == -1) 
+        posIndex = 8;
+
+    if(startBlink) {
+      blinkActive = true;
+      blinkRow = ROWS - 1;
+      blinkDirection = CLOSING;
+    }
+
+  // Blink down and back up then done.
+  if(blinkActive ) {
+    if(blinkDirection == CLOSING) {
+      blinkRow -= 1;
+      if(blinkRow == 0) {
+        blinkDirection = OPENING;
+      }
+    } else {
+      blinkRow += 1;
+      if(blinkRow == ROWS-1) {
+        blinkActive = false;
       }
     }
   }
   // Draw Eyeball
-  gComp.drawEyeball(bbuf,7, 15, 6, c.mediumblue, c.black, c.mediumgray, position[posIndex] );
-  gComp.drawEyeball(bbuf,22, 15, 6, c.mediumblue, c.black, c.mediumgray, position[posIndex] );
-//  gComp.drawEyeball(bbuf,60, 25, 14, c.olivegreen, c.black, c.mediumgray, position[posIndex] );
-//  gComp.drawEyeball(bbuf,100, 25, 14, c.brown, c.black, c.mediumgray, position[posIndex] );
+  gComp.drawEyeball(bbuf,7, 15, 6, c.mediumblue, c.black, c.darkgray, position[posIndex] );
+  gComp.drawEyeball(bbuf,22, 15, 6, c.mediumblue, c.black, c.darkgray, position[posIndex] );
 
-  if(blinkTrigger < 0) {
+  //if(blinkTrigger < 0) {
+  if(blinkActive) {
     // Mask the eyeball from the top down over the blinkPeriod 
-    gPrim.drawRect(bbuf,0,blinkToRow,29,29, 0,c.black);
+    gPrim.drawRect(bbuf,0,blinkRow,29,29, 0,c.black);
   }
 }
 
 //#########################
 //  Pacman chasing ghosts
 //#########################
-void GraphicsAnimations::pacman1(FrameBuffer bbuf) {
+void GraphicsAnimations::pacman1(FrameBuffer bbuf, const Pacman1Settings& settings) {
 
   // How quickly we do movement updates (in ms)
   uint16_t animatePeriod = 100;
@@ -633,7 +625,7 @@ void GraphicsAnimations::pacman1(FrameBuffer bbuf) {
     lastMouthCycle = mouthCycle;
   }
   // Draw Pacman
-  gComp.drawPacman(bbuf,centerX,15,c.yellow,c.black,mouthOpen);
+  gComp.drawPacman(bbuf,centerX,15,c.darkyellow,c.black,mouthOpen);
 }
 
 //#########################

@@ -15,41 +15,23 @@ const uint8_t missingGlyph[7] PROGMEM = {
   0b111110,
   0b111110,
 };
-const uint8_t GLYPH_P[7] PROGMEM = {
+const uint8_t GLYPH_A[7] PROGMEM = {
+  0b000000,
+  0b011100,
+  0b100010,
+  0b111110,
+  0b100010,
+  0b100010,
+  0b100010,
+};
+const uint8_t GLYPH_B[7] PROGMEM = {
   0b000000,
   0b111100,
   0b100010,
   0b111100,
-  0b100000,
-  0b100000,
-  0b100000,
-};
-const uint8_t GLYPH_I[7] PROGMEM = {
-  0b000000,
-  0b111110,
-  0b001000,
-  0b001000,
-  0b001000,
-  0b001000,
-  0b111110,
-};
-const uint8_t GLYPH_N[7] PROGMEM = {
-  0b000000,
-  0b100010,
-  0b110010,
-  0b101010,
-  0b100110,
   0b100010,
   0b100010,
-};
-const uint8_t GLYPH_E[7] PROGMEM = {
-  0b000000,
-  0b111110,
-  0b100000,
-  0b111000,
-  0b100000,
-  0b100000,
-  0b111110,
+  0b111100,
 };
 const uint8_t GLYPH_C[7] PROGMEM = {
   0b000000,
@@ -60,12 +42,138 @@ const uint8_t GLYPH_C[7] PROGMEM = {
   0b100000,
   0b011110,
 };
+const uint8_t GLYPH_D[7] PROGMEM = {
+  0b000000,
+  0b111100,
+  0b100010,
+  0b100010,
+  0b100010,
+  0b100010,
+  0b111100,
+};
+const uint8_t GLYPH_E[7] PROGMEM = {
+  0b000000,
+  0b111110,
+  0b100000,
+  0b111000,
+  0b100000,
+  0b100000,
+  0b111110,
+};
+const uint8_t GLYPH_F[7] PROGMEM = {
+  0b000000,
+  0b111110,
+  0b100000,
+  0b111100,
+  0b100000,
+  0b100000,
+  0b100000,
+};
+const uint8_t GLYPH_G[7] PROGMEM = {
+  0b000000,
+  0b011110,
+  0b100000,
+  0b111100,
+  0b100010,
+  0b100010,
+  0b011110,
+};
+const uint8_t GLYPH_H[7] PROGMEM = {
+  0b000000,
+  0b100010,
+  0b100010,
+  0b111110,
+  0b100010,
+  0b100010,
+  0b100010,
+};
+const uint8_t GLYPH_I[7] PROGMEM = {
+  0b000000,
+  0b111110,
+  0b001000,
+  0b001000,
+  0b001000,
+  0b001000,
+  0b111110,
+};
+const uint8_t GLYPH_J[7] PROGMEM = {
+  0b000000,
+  0b111110,
+  0b001000,
+  0b001000,
+  0b001000,
+  0b101000,
+  0b010000,
+};
+const uint8_t GLYPH_K[7] PROGMEM = {
+  0b000000,
+  0b100100,
+  0b101000,
+  0b110000,
+  0b101000,
+  0b100100,
+  0b100010,
+};
+const uint8_t GLYPH_L[7] PROGMEM = {
+  0b000000,
+  0b100000,
+  0b100000,
+  0b100000,
+  0b100000,
+  0b100000,
+  0b111110,
+};
+const uint8_t GLYPH_M[7] PROGMEM = {
+  0b000000,
+  0b100010,
+  0b110110,
+  0b101010,
+  0b100010,
+  0b100010,
+  0b100010,
+};
+const uint8_t GLYPH_N[7] PROGMEM = {
+  0b000000,
+  0b100010,
+  0b110010,
+  0b101010,
+  0b100110,
+  0b100010,
+  0b100010,
+};
+const uint8_t GLYPH_O[7] PROGMEM = {
+  0b000000,
+  0b111110,
+  0b100010,
+  0b100010,
+  0b100010,
+  0b100010,
+  0b111110,
+};
+const uint8_t GLYPH_P[7] PROGMEM = {
+  0b000000,
+  0b111100,
+  0b100010,
+  0b111100,
+  0b100000,
+  0b100000,
+  0b100000,
+};
+const uint8_t GLYPH_Q[7] PROGMEM = {
+  0b000000,
+  0b011100,
+  0b100010,
+  0b100010,
+  0b100010,
+  0b100010,
+  0b011010,
+};
 const uint8_t GLYPH_R[7] PROGMEM = {
   0b000000,
   0b111100,
   0b100010,
   0b111100,
-  0b101100,
+  0b100100,
   0b100010,
   0b100010,
 };
@@ -86,6 +194,60 @@ const uint8_t GLYPH_T[7] PROGMEM = {
   0b001000,
   0b001000,
   0b001000,
+};
+const uint8_t GLYPH_U[7] PROGMEM = {
+  0b000000,
+  0b100010,
+  0b100010,
+  0b100010,
+  0b100010,
+  0b100010,
+  0b011100,
+};
+const uint8_t GLYPH_V[7] PROGMEM = {
+  0b000000,
+  0b100010,
+  0b100010,
+  0b100010,
+  0b100010,
+  0b010100,
+  0b001000,
+};
+const uint8_t GLYPH_W[7] PROGMEM = {
+  0b000000,
+  0b100010,
+  0b100010,
+  0b100010,
+  0b101010,
+  0b110110,
+  0b100010,
+};
+const uint8_t GLYPH_X[7] PROGMEM = {
+  0b000000,
+  0b100010,
+  0b010100,
+  0b001000,
+  0b010100,
+  0b010010,
+  0b100010,
+};
+const uint8_t GLYPH_Y[7] PROGMEM = {
+  0b000000,
+  0b100010,
+  0b010100,
+  0b001000,
+  0b001000,
+  0b001000,
+  0b001000,
+};
+const uint8_t GLYPH_Z[7] PROGMEM = {
+  0b000000,
+  0b111110,
+  0b000100,
+  0b001000,
+  0b010000,
+  0b100000,
+  0b111110,
 };
 const uint8_t GLYPH_0[7] PROGMEM = {
   0b000000,
@@ -214,32 +376,32 @@ const uint8_t* font6x7[95] = {
     nullptr,       // >
     nullptr,       // ?
     nullptr,       // @
-    nullptr,       // A
-    nullptr,       // B
+    GLYPH_A,       // A
+    GLYPH_B,       // B
     GLYPH_C,       // C
-    nullptr,       // D
+    GLYPH_D,       // D
     GLYPH_E,       // E
-    nullptr,       // F
-    nullptr,       // G
-    nullptr,       // H
+    GLYPH_F,       // F
+    GLYPH_G,       // G
+    GLYPH_H,       // H
     GLYPH_I,       // I
-    nullptr,       // J
-    nullptr,       // K
-    nullptr,       // L
-    nullptr,       // M
+    GLYPH_J,       // J
+    GLYPH_K,       // K
+    GLYPH_L,       // L
+    GLYPH_M,       // M
     GLYPH_N,       // N
-    nullptr,       // O
+    GLYPH_O,       // O
     GLYPH_P,       // P
-    nullptr,       // Q
+    GLYPH_Q,       // Q
     GLYPH_R,       // R
     GLYPH_S,       // S
     GLYPH_T,       // T
-    nullptr,       // U
-    nullptr,       // V
-    nullptr,       // W
-    nullptr,       // X
-    nullptr,       // Y
-    nullptr,       // Z
+    GLYPH_U,       // U
+    GLYPH_V,       // V
+    GLYPH_W,       // W
+    GLYPH_X,       // X
+    GLYPH_Y,       // Y
+    GLYPH_Z,       // Z
     nullptr,       // [
     nullptr,       // \
     nullptr,       // ]

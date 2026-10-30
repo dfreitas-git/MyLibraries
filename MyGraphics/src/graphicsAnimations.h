@@ -16,6 +16,21 @@ struct ShootingStarSettings {
     float speedMultiplier = 1.0f;
 };
 
+struct CheckerBoardSettings {
+    int colorIndex = 0; 
+    uint8_t squareScaler = 2;  // range of 1-4
+};
+
+struct EyeballSettings {
+    int eyePosition_LR = 0;  // range of -1, 0, 1  (left, center, right)
+    int eyePosition_UD = 0;  // range of -1, 0, 1  (down, center, up)
+};
+
+struct Pacman1Settings {
+    int speed = 50;       // range of 0-99  0=stop, 99= full speed
+    uint8_t vertPosition = 15;  // range of 0-29  0=bottom, 29 top
+};
+
 class GraphicsAnimations {
 
   public:
@@ -27,19 +42,12 @@ class GraphicsAnimations {
     void fireworks(FrameBuffer bbuf);
     void initRocket();
     void initExplosion(float x, float y);
-    void checker(FrameBuffer bbuf);
+    void checker(FrameBuffer bbuf, const CheckerBoardSettings& settings);
     void spiralD(FrameBuffer bbuf);
     void flower(FrameBuffer bbuf);
-    void eyeball(FrameBuffer bbuf);
-    void pacman1(FrameBuffer bbuf);
+    void eyeball( FrameBuffer bbuf, const EyeballSettings& settings, bool startBlink);
+    void pacman1(FrameBuffer bbuf, const Pacman1Settings& settings);
     void flames(FrameBuffer bbuf);
-    //const bool& getSuperStarLaunchPending() const {
-    //    return superStarLaunchPending;
-   // }
-   // void setSuperStarLaunchPending(bool status) {
-   //    superStarLaunchPending  = status;
-   // }
-     
 
   private:
 

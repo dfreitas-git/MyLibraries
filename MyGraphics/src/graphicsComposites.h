@@ -6,7 +6,7 @@
 #include <colors.h>
 
 // eyeball movement enum
-enum EYEBALL_MOVE { LEFT, RIGHT, UP, DOWN, CENTER };
+enum EYEBALL_MOVE {CENTER, LEFT, RIGHT, UP, DOWN, LEFT_UP, LEFT_DOWN, RIGHT_UP, RIGHT_DOWN};
 
 //#####################
 //  Class Definition                         
