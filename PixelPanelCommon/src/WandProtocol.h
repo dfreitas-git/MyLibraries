@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 constexpr uint32_t WAND_PROTOCOL_MAGIC   = 0x57414E44;  // "WAND"
-constexpr uint16_t WAND_PROTOCOL_VERSION = 3;  // 3 adds swipeDirection
+constexpr uint16_t WAND_PROTOCOL_VERSION = 4;  // 4 adds button-click gesture events
 constexpr uint8_t PANEL_MAC[6] = { 0x2C, 0xBC, 0xBB, 0x4B, 0x7C, 0x60 };
 constexpr uint8_t WAND_MAC[6] = { 0x30, 0x30, 0xF9, 0x33, 0xE1, 0x7C };
 
@@ -22,7 +22,11 @@ enum class WandGesture : uint8_t {
 
     // Not implemented yet
     CircleCW,
-    CircleCCW
+    CircleCCW,
+
+    // New one-shot button events (deduplicated by eventSequence)
+    ButtonSingle,
+    ButtonDouble
 };
 
 struct WandPacket {
