@@ -339,11 +339,38 @@ const uint8_t GLYPH_9[7] PROGMEM = {
   0b000010,
   0b000010,
 };
+const uint8_t GLYPH_MINUS[7] PROGMEM = {
+  0b000000,
+  0b000000,
+  0b000000,
+  0b111110,
+  0b000000,
+  0b000000,
+  0b000000,
+};
+const uint8_t GLYPH_PLUS[7] PROGMEM = {
+  0b000000,
+  0b001000,
+  0b001000,
+  0b111110,
+  0b001000,
+  0b001000,
+  0b000000,
+};
+const uint8_t GLYPH_SPACE[7] PROGMEM = {
+  0b000000,
+  0b000000,
+  0b000000,
+  0b000000,
+  0b000000,
+  0b000000,
+  0b000000,
+};
 
 // 7x7 packed for all 95 printable ASCII characters.  If we have not populated a given
 // character, we use nullptr and getGlyph subs in a not-available symbol (Solid box)
 const uint8_t* font6x7[95] = {
-    nullptr,       // space
+    GLYPH_SPACE,   // space
     nullptr,       // !
     nullptr,       // "
     nullptr,       // #
@@ -354,9 +381,9 @@ const uint8_t* font6x7[95] = {
     nullptr,       // (
     nullptr,       // )
     nullptr,       // *
-    nullptr,       // +
+    GLYPH_PLUS,    // +
     nullptr,       // ,
-    nullptr,       // -
+    GLYPH_MINUS,   // -
     nullptr,       // .
     nullptr,       // /
     GLYPH_0,       // 0
