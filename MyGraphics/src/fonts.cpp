@@ -265,7 +265,7 @@ const uint8_t GLYPH_1[7] PROGMEM = {
   0b001000,
   0b001000,
   0b001000,
-  0b011100,
+  0b111110,
 };
 const uint8_t GLYPH_2[7] PROGMEM = {
   0b000000,
@@ -274,7 +274,7 @@ const uint8_t GLYPH_2[7] PROGMEM = {
   0b000100,
   0b001000,
   0b010000,
-  0b111100,
+  0b011110,
 };
 const uint8_t GLYPH_3[7] PROGMEM = {
   0b000000,
