@@ -366,12 +366,21 @@ const uint8_t GLYPH_SPACE[7] PROGMEM = {
   0b000000,
   0b000000,
 };
+const uint8_t GLYPH_EXCLAIM[7] PROGMEM = {
+  0b000000,
+  0b001100,
+  0b001100,
+  0b001100,
+  0b000000,
+  0b001100,
+  0b001100,
+};
 
 // 7x7 packed for all 95 printable ASCII characters.  If we have not populated a given
 // character, we use nullptr and getGlyph subs in a not-available symbol (Solid box)
 const uint8_t* font6x7[95] = {
     GLYPH_SPACE,   // space
-    nullptr,       // !
+    GLYPH_EXCLAIM, // !
     nullptr,       // "
     nullptr,       // #
     nullptr,       // $
