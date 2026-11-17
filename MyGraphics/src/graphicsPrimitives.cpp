@@ -28,30 +28,39 @@ void GraphicsPrimitives::writePixel(FrameBuffer bbuf, int col, int row, const st
 //  Draw line with specified two points, thickness and color
 //##########################################################
 void GraphicsPrimitives::drawLine(FrameBuffer bbuf, int pt0X, int pt0Y, int pt1X, int pt1Y, int thickness, const struct RGB& color) {
-  float m = float(pt1Y-pt0Y)/float(pt1X-pt0X);
-  float b = pt0Y - (m * pt0X);
 
-  int minX, minY, maxX, maxY;
-  if(pt0X > pt1X) {
-    minX=pt1X;
-    maxX=pt0X;
+  // A vertical line, can't use y=mx+b
+  if(pt0X == pt1X) {
+    for(int row = pt0Y; row <= pt1Y; row++) {
+      writePixel(bbuf, pt0X, row, color);
+    }
   } else {
-    minX=pt0X;
-    maxX=pt1X;
-  }
-  if(pt0Y > pt1Y) {
-    minY=pt1Y;
-    maxY=pt0Y;
-  } else {
-    minY=pt0Y;
-    maxY=pt1Y;
-  }
+    
+    float m = float(pt1Y-pt0Y)/float(pt1X-pt0X);
+    float b = pt0Y - (m * pt0X);
 
-  for (int col = minX; col <= maxX; col++) {
-    for(int row = minY; row <= maxY; row++) {
-      float y = (m * float(col)) + b;
-      if(abs(float(row) - y) <= thickness) {
-        writePixel(bbuf, col, row, color);
+    int minX, minY, maxX, maxY;
+    if(pt0X > pt1X) {
+      minX=pt1X;
+      maxX=pt0X;
+    } else {
+      minX=pt0X;
+      maxX=pt1X;
+    }
+    if(pt0Y > pt1Y) {
+      minY=pt1Y;
+      maxY=pt0Y;
+    } else {
+      minY=pt0Y;
+      maxY=pt1Y;
+    }
+  
+    for (int col = minX; col <= maxX; col++) {
+      for(int row = minY; row <= maxY; row++) {
+        float y = (m * float(col)) + b;
+        if(abs(float(row) - y) <= thickness) {
+          writePixel(bbuf, col, row, color);
+        }
       }
     }
   }
