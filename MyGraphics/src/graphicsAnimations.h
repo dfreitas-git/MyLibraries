@@ -16,6 +16,11 @@ struct ShootingStarSettings {
     float speedMultiplier = 1.0f;
 };
 
+struct FireworksSettings {
+    float gravity = 1.0f;
+    int timeUntilInit = 1000;
+};
+
 struct CheckerBoardSettings {
     int colorIndex = 0; 
     uint8_t squareScaler = 2;  // range of 1-4
@@ -39,7 +44,7 @@ class GraphicsAnimations {
     void initSuperStar(float& direction);
     void shootingStar(FrameBuffer bbuf, const ShootingStarSettings& settings);
     void fadeFramebuffer(FrameBuffer bbuf, uint8_t decay);
-    void fireworks(FrameBuffer bbuf);
+    void fireworks(FrameBuffer bbuf,const FireworksSettings& settings);
     void initRocket();
     void initExplosion(float x, float y);
     void checker(FrameBuffer bbuf, const CheckerBoardSettings& settings);

@@ -258,7 +258,7 @@ void GraphicsAnimations::initExplosion(float x, float y) {
 // Main Fireworks code
 // Control the rocket/explosion phases with state variables
 // ###########################################################
-void GraphicsAnimations::fireworks(FrameBuffer bbuf) {
+void GraphicsAnimations::fireworks(FrameBuffer bbuf, const FireworksSettings& settings) {
 
   switch (fwState) {
     case FIREWORK_ROCKET: {
@@ -294,7 +294,7 @@ void GraphicsAnimations::fireworks(FrameBuffer bbuf) {
         if (!s->active) continue;
 
         s->x += s->vx;
-        s->y += s->vy - s->gravity;
+        s->y += s->vy - s->gravity * settings.gravity;
 
         s->vx *= 0.92;   // optional drag
         s->vy *= 0.92;
@@ -319,7 +319,7 @@ void GraphicsAnimations::fireworks(FrameBuffer bbuf) {
         }
       }
 
-      if (millis() - stateStartTime > 1000) {
+      if (millis() - stateStartTime > settings.timeUntilInit) {
         initRocket();
       }
     } break;
@@ -588,7 +588,8 @@ void GraphicsAnimations::eyeball(FrameBuffer bbuf, const EyeballSettings& settin
 void GraphicsAnimations::pacman1(FrameBuffer bbuf, const Pacman1Settings& settings) {
 
   // How quickly we do movement updates (in ms)
-  uint16_t animatePeriod = 100;
+  //uint16_t animatePeriod = 100;
+  int animatePeriod = settings.speed;
   uint16_t animateMouthPeriod = 200;
 
   // Get the colors
@@ -625,7 +626,8 @@ void GraphicsAnimations::pacman1(FrameBuffer bbuf, const Pacman1Settings& settin
     lastMouthCycle = mouthCycle;
   }
   // Draw Pacman
-  gComp.drawPacman(bbuf,centerX,15,c.darkyellow,c.black,mouthOpen);
+  //gComp.drawPacman(bbuf,centerX,15,c.darkyellow,c.black,mouthOpen);
+  gComp.drawPacman(bbuf,centerX,settings.vertPosition,c.darkyellow,c.black,mouthOpen);
 }
 
 //#########################
