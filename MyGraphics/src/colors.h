@@ -12,8 +12,9 @@
 struct palette { 
     RGB black          = {0,0,0};
     RGB white          = {255,255,255};
-    RGB brown          = {102,51,64};
-    RGB lightbrown     = {255,159,127};
+    RGB darkbrown      = {74,51,0};
+    RGB brown          = {120,83,4};
+    RGB lightbrown     = {168,118,10};
 
     RGB darkgray       = {64,64,64};
     RGB mediumgray     = {96,96,96};
