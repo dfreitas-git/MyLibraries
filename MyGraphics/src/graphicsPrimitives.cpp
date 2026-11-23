@@ -216,6 +216,63 @@ void GraphicsPrimitives::drawArc(FrameBuffer bbuf,const Vec2& p1, const Vec2& p2
 }
 
 //####################################################################
+//  Draw a rect filled with a pattern passed in as a pointer
+//  This is essentially a sprite placer.  Create a sprite rect and 
+//  have this function rotate/place the sprite into the framebuffer
+//####################################################################
+void GraphicsPrimitives::drawTexturedRect(
+    FrameBuffer bbuf,
+    int centerX, int centerY,
+    int width, int height,
+    int rotate,
+    const RGB* pixels)
+{
+    // Assumes "rotate" is specified in degrees so we need to convert to radians
+       
+    // Inverse transforming local, non-rotated rect coords to framebuffer coords with
+    //  x_s= c_x + (x_d - c_x) * cos(theta) + (y_d - c_y) * sin(theta)
+    //  y_s= c_y - (x_d - c_x) * sin(theta) + (y_d - c_y) * cos(theta)
+    float rad = rotate * PI / 180.0f;
+    float c = cosf(rad);
+    float s = sinf(rad);
+
+    //float halfW = width / 2.0f;
+    //float halfH = height / 2.0f;
+    float halfW = (width  - 1) / 2.0f;
+    float halfH = (height - 1) / 2.0f;
+
+    // Conservative bounding box around rotated rectangle
+    float boundX = fabsf(halfW * c) + fabsf(halfH * s);
+    float boundY = fabsf(halfW * s) + fabsf(halfH * c);
+
+    int minX = floorf(centerX - boundX);
+    int maxX = ceilf(centerX + boundX);
+    int minY = floorf(centerY - boundY);
+    int maxY = ceilf(centerY + boundY);
+
+    for (int y = minY; y <= maxY; y++) {
+        for (int x = minX; x <= maxX; x++) {
+
+            // Inverse rotation
+            float dx = x - centerX;
+            float dy = y - centerY;
+
+            float srcX = dx * c + dy * s + halfW;
+            float srcY = -dx * s + dy * c + halfH;
+
+            int tx = static_cast<int>(floorf(srcX));
+            int ty = static_cast<int>(floorf(srcY));
+
+            if (tx >= 0 && tx < width &&
+                ty >= 0 && ty < height) {
+
+                writePixel(bbuf, x, y, pixels[ty * width + tx]);
+            }
+        }
+    }
+}
+
+//####################################################################
 //  Draw filled rect with specified  ll/ur points, rotation and color
 //####################################################################
 void GraphicsPrimitives::drawRect(FrameBuffer bbuf, int llX, int llY, int urX, int urY, int rotate, const struct RGB& color) {
@@ -248,8 +305,8 @@ void GraphicsPrimitives::drawQuad(FrameBuffer bbuf, int pt0X, int pt0Y, int pt1X
   float rad = rotate * PI / 180;
 
   // get the center coords
-  float cx = (pt0X + pt1X + pt2X + pt3X) / 4;
-  float cy = (pt0Y + pt1Y + pt2Y + pt3Y) / 4;
+  float cx = (pt0X + pt1X + pt2X + pt3X) / 4.0f;
+  float cy = (pt0Y + pt1Y + pt2Y + pt3Y) / 4.0f;
 
   // precompute sin/cos to reduce loop time
   float s = sinf(rad);

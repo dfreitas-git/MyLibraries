@@ -15,6 +15,9 @@ struct palette {
     RGB darkbrown      = {74,51,0};
     RGB brown          = {120,83,4};
     RGB lightbrown     = {168,118,10};
+    RGB mmGolden       = {255,190,90};
+    RGB mmToasted      = {160,80,30};
+    RGB mmCharred      = {20,10,5};
 
     RGB darkgray       = {64,64,64};
     RGB mediumgray     = {96,96,96};
@@ -39,6 +42,7 @@ struct palette {
     RGB darkblue       = {0,0,64};
     RGB mediumblue     = {0,0,128};
     RGB blue           = {0,0,255};
+    RGB flameblue      = {64,64,255};
     RGB pixelgameblue  = {30,110,255};
     RGB pixelscoreblue = {60,160,255};
 

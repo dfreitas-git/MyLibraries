@@ -17,6 +17,7 @@ public:
   void drawLine(FrameBuffer bbuf, int pt0X, int pt0Y, int pt1X, int pt1Y, int thickness, const struct RGB& color);
   void drawTriangle(FrameBuffer bbuf, const Vec2& v1, const Vec2& v2, const Vec2& v3, const struct RGB& color);
   void drawArc(FrameBuffer bbuf,const Vec2& p1, const Vec2& p2, const Vec2& p3, int thickness, const struct RGB& color);
+  void drawTexturedRect( FrameBuffer bbuf, int centerX, int centerY, int width, int height, int rotate, const RGB* pixels);
   void drawRect(FrameBuffer bbuf, int llX, int llY, int urX, int urY, int rotate, const struct RGB& color);
   void drawQuad(FrameBuffer bbuf, int pt0X, int pt0Y, int pt1X, int pt1Y, int pt2X, int pt2Y, int pt3X, int pt3Y, int rotate, const struct RGB& color);
   void drawDiamond(FrameBuffer bbuf,int centerX, int centerY, int extentX, int extentY, const struct RGB& color);
