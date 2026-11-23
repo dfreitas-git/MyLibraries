@@ -17,7 +17,8 @@ struct palette {
     RGB lightbrown     = {168,118,10};
     RGB mmGolden       = {255,190,90};
     RGB mmToasted      = {160,80,30};
-    RGB mmCharred      = {20,10,5};
+    RGB mmDark         = {20,10,5};
+    RGB mmCharred      = {5,4,2};
 
     RGB darkgray       = {64,64,64};
     RGB mediumgray     = {96,96,96};
