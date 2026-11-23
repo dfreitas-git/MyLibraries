@@ -266,6 +266,7 @@ void GraphicsPrimitives::drawTexturedRect(
             if (tx >= 0 && tx < width &&
                 ty >= 0 && ty < height) {
 
+                // pixels is a row-major RGB buffer of width * height elements.
                 writePixel(bbuf, x, y, pixels[ty * width + tx]);
             }
         }
