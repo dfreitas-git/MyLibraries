@@ -337,21 +337,11 @@ void GraphicsAnimations::checker(FrameBuffer bbuf, const CheckerBoardSettings& s
   // Use time to control the frequency of color changes
   uint32_t elapsed = millis();
 
-  // Pick the color based on the pose parameters
-  RGB color = checkerBoardColors[settings.colorIndex];
-
-  uint8_t bright;
-
-  if(settings.colorIndex < 33) {
-      bright = map(settings.colorIndex,0,32,6,48);
-      color = {bright,0,0};
-  } else if(settings.colorIndex < 66) {
-      bright = map(settings.colorIndex,33,62,6,96);
-      color = {0,bright,0};
-  } else {
-      bright = map(settings.colorIndex,63,99,6,128);
-      color = {0,0,bright};
-  }
+  // Change the color based on the pose parameters
+  RGB color;
+  RGB color1 = {64,0,0};
+  RGB color2 = {0,64,0};
+  lerpColor(color, color1, color2, float(settings.colorIndex/100.0));
 
   // Now map the color based on the position
   for (int col = 0; col < COLUMNS; col++) {
