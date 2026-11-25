@@ -371,9 +371,27 @@ const uint8_t GLYPH_EXCLAIM[7] PROGMEM = {
   0b001100,
   0b001100,
   0b001100,
+  0b001100,
   0b000000,
   0b001100,
-  0b001100,
+};
+const uint8_t GLYPH_COLON[7] PROGMEM = {
+  0b000000,
+  0b000000,
+  0b001000,
+  0b000000,
+  0b001000,
+  0b000000,
+  0b000000,
+};
+const uint8_t GLYPH_EQUAL[7] PROGMEM = {
+  0b000000,
+  0b000000,
+  0b111110,
+  0b000000,
+  0b111110,
+  0b000000,
+  0b000000,
 };
 
 // 7x7 packed for all 95 printable ASCII characters.  If we have not populated a given
@@ -405,10 +423,10 @@ const uint8_t* font6x7[95] = {
     GLYPH_7,       // 7
     GLYPH_8,       // 8
     GLYPH_9,       // 9
-    nullptr,       // :
+    GLYPH_COLON,   // :
     nullptr,       // ;
     nullptr,       // <
-    nullptr,       // =
+    GLYPH_EQUAL,   // =
     nullptr,       // >
     nullptr,       // ?
     nullptr,       // @
