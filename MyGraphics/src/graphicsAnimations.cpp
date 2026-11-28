@@ -178,8 +178,8 @@ void GraphicsAnimations::shootingStar(FrameBuffer bbuf, const ShootingStarSettin
       int col;
       int row;
  
-      // Make it triple wide/tall
-      for(int i=-1; i<2; i++) {
+      // Make it wide/tall
+      for(int i=-2; i<=2; i++) {
           col = (int)superS->x+i;
           row = (int)superS->y+i;
     
